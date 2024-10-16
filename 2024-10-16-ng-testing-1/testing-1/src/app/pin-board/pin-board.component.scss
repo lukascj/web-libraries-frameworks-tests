@@ -1,0 +1,52 @@
+#wrap {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    > .btn {
+        width: 40px;
+        height: 70px;
+        background-color: var(--c1);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all ease 0.2s;
+        border: 2px solid;
+        border-color: var(--c1-light);
+        > svg {
+            scale: 1.5;
+            fill: var(--c1-light-2);
+            transition: inherit;
+        }
+    }
+    > .btn:hover {
+        border-color: var(--c1-light-2);
+        > svg {
+            fill: white;
+        }
+    }
+    > .btn.l {
+        > svg {
+            transform: translateX(-1px);
+        }
+    }
+    > .btn.r {
+        > svg {
+            transform: translateX(1px);
+        }
+    }
+    > #grid {
+        min-width: max-content;
+        max-width: 100%;
+        border-radius: 30px;
+        border: 2px solid var(--c1-light);
+        padding: 40px;
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        grid-auto-columns: 200px;
+        grid-auto-flow: column;
+    }
+}

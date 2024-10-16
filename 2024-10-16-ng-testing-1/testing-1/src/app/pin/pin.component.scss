@@ -1,0 +1,20 @@
+#wrap {
+    > #img-wrap {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        border: 2px solid;
+        border-color: var(--c1-light-2);
+        > img {
+            --scale: 100%;
+            width: var(--scale);
+            height: var(--scale);
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}

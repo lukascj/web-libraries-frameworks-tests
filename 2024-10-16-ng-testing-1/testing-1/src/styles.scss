@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    --c1: #131417; /* rgb(19,20,23), hsl(225,10,8) */ 
+    --c1-light: #1e1f26; /* rgb(30,31,38), hsl(233,12,13) */ 
+    --c1-light-2: #454857; /* rgb(69,72,87), hsl(230,12,31) */ 
+    --c2: #d22c75; /* rgb(218,47,118) */
+    --c2-dark: #922267;
+    
+    background-color: var(--c1);
+}
