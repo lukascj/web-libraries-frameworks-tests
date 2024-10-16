@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Three.js 3D Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap"></div>
+    <script type="module">
+        // Importera three.js biblioteket.
+        import * as THREE from 'three';
+        // För att tillåta kamera att röra sig omkring i scenen via användarinputs.
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        // För att tillåta imortering av gltf-filer.
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // Skapa en three.js scen.
+        const scene = new THREE.Scene();
+        // Skapa en ny kamera med positioner och vinklar.
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // För 3D-objektet respektive OrbitControls.
+        let object, controls;
+        let objName = "tie-fighter";
+
+        // Håll reda på mus-positionen.
+        if(objName != "tie-fighter") {
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+        }
+        
+        const loader = new GLTFLoader();
+        // Ladda in fil.
+        loader.load(
+            `models/${objName}/scene.gltf`,
+            function(gltf) {
+                // Om filen är laddad, lägg till den i scenen.
+                object = gltf.scene;
+                scene.add(object);
+            },
+            function(xhr) {
+                // Logga framsteg under inladdning.
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            function(error) {
+                console.error(error);
+            }
+        );
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true }); // alpha: true ger transparant bakgrund.
+        // Sätt storlek på renderaren.
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Lägg till renderare i DOM:en.
+        document.getElementById("wrap").appendChild(renderer.domElement);
+
+        // Sätt kamera-avstånd.
+        camera.position.z = objName == "tie-fighter" ? 7 : 500;
+
+        // Lägg till belysning i scenen.
+        const topLight = new THREE.DirectionalLight(0xffffff, 1) // Färg, intensitet.
+        topLight.position.set(500, 500, 500);
+        topLight.castShadow = true;
+        scene.add(topLight);
+        // Mer belysning.
+        const ambientLight = new THREE.AmbientLight(0x333333, objName == "tie-fighter" ? 5 : 1);
+        scene.add(ambientLight);
+
+        // Lägg till kamera-kontroll.
+        if(objName == "tie-fighter") {
+            controls = new OrbitControls(camera, renderer.domElement);
+        }
+
+        // Rendera scenen.
+        function animate() {
+            requestAnimationFrame(animate);
+            // Här kan vi lägga till kod för att uppdatera scenen, lägga till rörelser.
+        
+            // Få modellen att röra sig.
+            if(object && objName != "tie-fighter") {
+                object.rotation.y = -3 + mouseX / window.innerWidth * 3;
+                object.rotation.x = -1.2 + mouseY * 2.5 / window.innerHeight;
+            }
+            renderer.render(scene, camera);
+        }
+
+        // Anpassa scen efter omställning av fönsterstorlek.
+        window.addEventListener("resize", function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Upptäck musrörelse.
+        if(objName != "tie-fighter") {
+            document.onmousemove = (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }
+        }
+
+        // Påbörja rendering.
+        animate();
+
+    </script>
+</body>
+</html>
